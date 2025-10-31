@@ -12,6 +12,8 @@ import matplotlib.gridspec as gridspec
 import matplotlib.patches as patches
 import numpy as np
 
+DPI = 300
+
 # --- Machining Parameters ---
 
 ap = 1  #(mm)
@@ -60,6 +62,49 @@ for df in [dfC150, dfNC150, dfC1200, dfNC1200]:
 for df in [dfC150, dfNC150, dfC1200, dfNC1200]:
     df.dropna(inplace=True)
 
+# --- Programmed position plots (before filtering) ---
+
+fig = plt.figure(figsize=(10,8))
+gs = gridspec.GridSpec(2, 2, height_ratios=[1,1])  # 2x2 grid
+
+# Progammed positions X vs Z
+ax1 = fig.add_subplot(gs[0, :])
+ax1.plot(dfC150['prog_pos_z'], dfC150['prog_pos_x'],
+         label='C150', color='brown', marker='o', linestyle='none')
+ax1.plot(dfC1200['prog_pos_z'], dfC1200['prog_pos_x'],
+         label='C1200', color='darkblue', marker='*', linestyle='none')
+ax1.set_xlabel('Position Z (mm)')
+ax1.set_ylabel('Position X Diameter (mm)')
+ax1.set_title('Programmed position')
+
+# Progammed position Z vs Time
+ax2 = fig.add_subplot(gs[1, 0])
+ax2.plot(dfC150['time'], dfC150['prog_pos_z'],
+         label='C150', color='brown', marker='o', linestyle='none')
+ax2.plot(dfC1200['time'], dfC1200['prog_pos_z'],
+         label='C1200', color='darkblue', marker='*', linestyle='none')
+ax2.set_xlabel('Time (s)')
+ax2.set_ylabel('Position Z (mm)')
+ax2.set_title('Programmed Z vs. Time')
+
+# Progammed position X Diameter vs Time
+ax3 = fig.add_subplot(gs[1, 1])
+ax3.plot(dfC150['time'], dfC150['prog_pos_x'],
+         label='C150', color='brown', marker='o', linestyle='none')
+ax3.plot(dfC1200['time'], dfC1200['prog_pos_x'],
+         label='C1200', color='darkblue', marker='*', linestyle='none')
+ax3.set_xlabel('Time (s)')
+ax3.set_ylabel('Position X Diameter (mm)')
+ax3.set_title('Programmed X Diameter vs. Time')
+
+for ax in [ax1, ax2, ax3]:
+    ax.grid(True)
+    ax.legend()
+
+plt.tight_layout()
+plt.savefig('position_before_filter.png', dpi=DPI, bbox_inches='tight')
+#plt.show()
+
 # --- Filtering data in order to select only the cutting parts ---
 
 dfs = {'C150': dfC150, 'NC150': dfNC150, 'C1200': dfC1200, 'NC1200': dfNC1200}
@@ -77,8 +122,7 @@ filt_dfNC150 = dfs['NC150']
 filt_dfC1200 = dfs['C1200']
 filt_dfNC1200 = dfs['NC1200']
 
-# --- Programmed position plots ---
-
+# Programmed position plots
 fig = plt.figure(figsize=(10,8))
 gs = gridspec.GridSpec(2,1)  # 2x2 grid
 
@@ -107,7 +151,7 @@ for ax in [ax1, ax2]:
     ax.legend()
 plt.tight_layout()
 
-plt.savefig('programmed_positions_150_1200.png', dpi=600, bbox_inches='tight')
+plt.savefig('programmed_positions_150_1200.png', dpi=DPI, bbox_inches='tight')
 #plt.show()
 
 # --- Power plots ---
@@ -138,10 +182,10 @@ for ax in [ax1, ax2]:
     ax.legend()
 plt.tight_layout()
 
-plt.savefig('power_vs_time_150_1200.png', dpi=600, bbox_inches='tight')
+plt.savefig('power_vs_time_150_1200.png', dpi=DPI, bbox_inches='tight')
 #plt.show()
 
-# --- Filtering data to avoid power picks ---
+# --- Filtering data to avoid power peaks ---
 
 dfs = {'C150': filt_dfC150, 'NC150': filt_dfNC150, 'C1200': filt_dfC1200, 'NC1200': filt_dfNC1200}
 cleaned_dfs = {}
@@ -192,7 +236,7 @@ for ax in [ax1, ax2]:
     ax.legend()
 plt.tight_layout()
 
-plt.savefig('power_vs_time_150_1200_v2.png', dpi=600, bbox_inches='tight')
+plt.savefig('power_vs_time_150_1200_v2.png', dpi=DPI, bbox_inches='tight')
 #plt.show()
 
 # Plot focused on the power transitory
@@ -210,10 +254,10 @@ plt.grid(True)
 plt.legend()
 plt.tight_layout()
 
-plt.savefig('focus_power.png', dpi=600, bbox_inches='tight')
-plt.show()
+plt.savefig('focus_power.png', dpi=DPI, bbox_inches='tight')
+#plt.show()
 
-# C150: excluding elements until t = 4
+# --- C150: excluding elements until t = 4 ---
 filt_dfC150_new = filt_dfC150_new[filt_dfC150_new['time'] > 4]
 
 # Re-definition of filtered data frames
@@ -301,7 +345,7 @@ fig.text(0.5, 0.93, "Constant Cutting Speed at 150 m/min",
          ha='center', fontsize=12, style='italic', color='dimgray')
 
 plt.tight_layout(rect=[0, 0, 1, 0.96])
-plt.savefig('pc_vs_time_diam.png', dpi=600, bbox_inches='tight')
+plt.savefig('pc_vs_time_diam.png', dpi=DPI, bbox_inches='tight')
 #plt.show()
 
 # --- Constant Speed Spindle Analysis ---
@@ -316,7 +360,7 @@ df_1200['Fc'] = df_1200['Pc'] / df_1200['Vc'] * 60   #(N)
 df_1200['Kc'] = df_1200['Fc'] / (ap * f)   #(N/mm² = MPa)
 
 stats_1200 = (
-    df_1200.groupby('prog_pos_x')[['Pc', 'Vc', 'Fc', 'Kc']]
+    df_1200.groupby('prog_pos_x')[['Pc', 'Fc', 'Kc']]
     .agg(['min', 'max', 'mean', 'std'])
     .reset_index()
     .sort_values(by='prog_pos_x', ascending=False)
@@ -363,10 +407,10 @@ fig.legend(handles, labels,
            bbox_to_anchor=(0.5, -0.02),  # outside bottom margin
            ncol=3,
            frameon=False)
-fig.suptitle("Cutting Power vs. Time for Each Programmed Dosition Diameter X", fontsize=14, fontweight='bold')
+fig.suptitle("Cutting Power vs. Time for Each Programmed Position Diameter X", fontsize=14, fontweight='bold')
 fig.text(0.5, 0.93, "Constant Spindle Speed at 1200 rpm",
          ha='center', fontsize=12, style='italic', color='dimgray')
 
 plt.tight_layout(rect=[0, 0, 1, 0.96])
-plt.savefig('pc_vs_time_diam_1200.png', dpi=600, bbox_inches='tight')
+plt.savefig('pc_vs_time_diam_1200.png', dpi=DPI, bbox_inches='tight')
 #plt.show()

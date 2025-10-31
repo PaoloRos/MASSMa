@@ -1,11 +1,11 @@
-This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.7.23)  31 OCT 2025 11:48
+This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.10.31)  31 OCT 2025 15:19
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
 **1st_massma_report.tex
 (./1st_massma_report.tex
 LaTeX2e <2025-06-01> patch level 1
-L3 programming layer <2025-07-19>
+L3 programming layer <2025-10-24>
 (/Users/paolorossi/Library/TinyTeX/texmf-dist/tex/latex/base/article.cls
 Document Class: article 2025/01/22 v1.4n Standard LaTeX document class
 (/Users/paolorossi/Library/TinyTeX/texmf-dist/tex/latex/base/size11.clo
@@ -147,21 +147,21 @@ Already applied: [0000/00/00] Old fixltx2e package on input line 53.
 ) (/Users/paolorossi/Library/TinyTeX/texmf-dist/tex/xelatex/mathspec/mathspec.sty
 Package: mathspec 2016/12/22 v0.2b LaTeX Package (Mathematics font selection for XeLaTeX)
 (/Users/paolorossi/Library/TinyTeX/texmf-dist/tex/latex/etoolbox/etoolbox.sty
-Package: etoolbox 2025/02/11 v2.5l e-TeX tools for LaTeX (JAW)
+Package: etoolbox 2025/10/02 v2.5m e-TeX tools for LaTeX (JAW)
 \etb@tempcnta=\count291
 ) (/Users/paolorossi/Library/TinyTeX/texmf-dist/tex/latex/fontspec/fontspec.sty (/Users/paolorossi/Library/TinyTeX/texmf-dist/tex/latex/l3packages/xparse/xparse.sty (/Users/paolorossi/Library/TinyTeX/texmf-dist/tex/latex/l3kernel/expl3.sty
-Package: expl3 2025-07-19 L3 programming layer (loader) 
+Package: expl3 2025-10-24 L3 programming layer (loader) 
 (/Users/paolorossi/Library/TinyTeX/texmf-dist/tex/latex/l3backend/l3backend-xetex.def
-File: l3backend-xetex.def 2025-06-09 L3 backend support: XeTeX
+File: l3backend-xetex.def 2025-10-09 L3 backend support: XeTeX
 \g__graphics_track_int=\count292
 \g__pdfannot_backend_int=\count293
 \g__pdfannot_backend_link_int=\count294
 ))
-Package: xparse 2024-08-16 L3 Experimental document command parser
+Package: xparse 2025-10-09 L3 Experimental document command parser
 )
-Package: fontspec 2024/05/11 v2.9e Font selection for XeLaTeX and LuaLaTeX
+Package: fontspec 2025/09/29 v2.9g Font selection for XeLaTeX and LuaLaTeX
 (/Users/paolorossi/Library/TinyTeX/texmf-dist/tex/latex/fontspec/fontspec-xetex.sty
-Package: fontspec-xetex 2024/05/11 v2.9e Font selection for XeLaTeX and LuaLaTeX
+Package: fontspec-xetex 2025/09/29 v2.9g Font selection for XeLaTeX and LuaLaTeX
 \l__fontspec_script_int=\count295
 \l__fontspec_language_int=\count296
 \l__fontspec_strnum_int=\count297
@@ -208,7 +208,7 @@ File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
 )
 Package graphics Info: Driver file: xetex.def on input line 106.
 (/Users/paolorossi/Library/TinyTeX/texmf-dist/tex/latex/graphics-def/xetex.def
-File: xetex.def 2022/09/22 v5.0n Graphics/color driver for xetex
+File: xetex.def 2025/09/29 v5.0o Graphics/color driver for xetex
 ))
 \Gin@req@height=\dimen162
 \Gin@req@width=\dimen163
@@ -429,11 +429,11 @@ Package: ragged2e 2023/06/22 v3.6 ragged2e Package
 ) (/Users/paolorossi/Library/TinyTeX/texmf-dist/tex/latex/setspace/setspace.sty
 Package: setspace 2022/12/04 v6.7b set line spacing
 ) (/Users/paolorossi/Library/TinyTeX/texmf-dist/tex/latex/lastpage/lastpage.sty
-Package: lastpage 2025/06/06 v2.1g lastpage: 2.09 or 2e? (HMM)
+Package: lastpage 2025/08/14 v2.1h lastpage: 2.09 or 2e? (HMM)
 (/Users/paolorossi/Library/TinyTeX/texmf-dist/tex/latex/lastpage/lastpage2e.sty
-Package: lastpage2e 2025/06/06 v2.1g Decide which 2e lastpage version to use (HMM)
+Package: lastpage2e 2025/08/14 v2.1h Decide which 2e lastpage version to use (HMM)
 (/Users/paolorossi/Library/TinyTeX/texmf-dist/tex/latex/lastpage/lastpagemodern.sty
-Package: lastpagemodern 2025-06-06 v2.1g Refers to last page's name (HMM; JPG)
+Package: lastpagemodern 2025-08-14 v2.1h Refers to last page's name (HMM; JPG)
 \c@lastpagecount=\count336
 ) 
 )) (/Users/paolorossi/Library/TinyTeX/texmf-dist/tex/latex/gensymb/gensymb.sty
@@ -631,7 +631,11 @@ Package: enumitem 2025/02/06 v3.11 Customized lists
 \ULC@box=\box80
 Package: ulem 2019/11/18
 \ULdepth=\dimen280
-) (./1st_massma_report.aux)
+) (./1st_massma_report.aux
+
+LaTeX Warning: Label `fig:positions_before_after_filter' multiply defined.
+
+)
 \openout1 = `1st_massma_report.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 232.
@@ -712,41 +716,41 @@ Package gensymb Warning: Not defining \micro.
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: End \AtBeginDocument code.
 File: /Users/paolorossi/Documents/uni_appunti/appunti_uni/unitn_logo.pdf Graphic file (type pdf)
-<use /Users/paolorossi/Documents/uni_appunti/appunti_uni/unitn_logo.pdf>
-(./1st_massma_report.toc)
-\tf@toc=\write4
-\openout4 = `1st_massma_report.toc'.
-
-LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 248.
+</Users/paolorossi/Documents/uni_appunti/appunti_uni/unitn_logo.pdf>
+(./1st_massma_report.toc
+LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 4.
 (/Users/paolorossi/Library/TinyTeX/texmf-dist/tex/latex/lm/ot1lmr.fd
 File: ot1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OML+lmm on input line 248.
+LaTeX Font Info:    Trying to load font information for OML+lmm on input line 4.
 (/Users/paolorossi/Library/TinyTeX/texmf-dist/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 248.
+LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 4.
 (/Users/paolorossi/Library/TinyTeX/texmf-dist/tex/latex/lm/omslmsy.fd
 File: omslmsy.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 248.
+LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 4.
 (/Users/paolorossi/Library/TinyTeX/texmf-dist/tex/latex/lm/omxlmex.fd
 File: omxlmex.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10.95> on input line 248.
+(Font)              <10.95> on input line 4.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 248.
+(Font)              <8> on input line 4.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 248.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 248.
+(Font)              <6> on input line 4.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 4.
 (/Users/paolorossi/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 248.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 4.
 (/Users/paolorossi/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-)
+))
+\tf@toc=\write4
+\openout4 = `1st_massma_report.toc'.
+
 File: turn_image.png Graphic file (type bmp)
 <turn_image.png>
 
@@ -758,23 +762,62 @@ See the caption package documentation for explanation.
 
 [1
 
-] 
+]
+File: position_before_filter.png Graphic file (type bmp)
+<position_before_filter.png>
+File: programmed_positions_150_1200.png Graphic file (type bmp)
+<programmed_positions_150_1200.png>
+File: power_vs_time_150_1200.png Graphic file (type bmp)
+<power_vs_time_150_1200.png>
+File: power_vs_time_150_1200_v2.png Graphic file (type bmp)
+<power_vs_time_150_1200_v2.png>
+File: focus_power.png Graphic file (type bmp)
+<focus_power.png>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 332.
+See the caption package documentation for explanation.
+
+
+
+[2]
+File: pc_vs_time_diam.png Graphic file (type bmp)
+<pc_vs_time_diam.png>
+File: pc_vs_time_diam_1200.png Graphic file (type bmp)
+<pc_vs_time_diam_1200.png>
+
+
+[3]
+
+[4]
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <10> on input line 390.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <7> on input line 390.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <5> on input line 390.
+
+
+[5] 
 enddocument/afterlastpage (AED): lastpage setting LastPage.
 (./1st_massma_report.aux)
  ***********
 LaTeX2e <2025-06-01> patch level 1
-L3 programming layer <2025-07-19>
+L3 programming layer <2025-10-24>
  ***********
+
+LaTeX Warning: There were multiply-defined labels.
+
 Package rerunfilecheck Info: File `1st_massma_report.out' has not changed.
-(rerunfilecheck)             Checksum: A02D95553E30B97FF125B1AA17CF9044;47.
+(rerunfilecheck)             Checksum: BCDDE0931A62A17C0E6DCE4C7CAE9770;444.
  ) 
 Here is how much of TeX's memory you used:
- 21635 strings out of 470473
- 397281 string characters out of 5490342
- 825942 words of memory out of 5000000
- 49607 multiletter control sequences out of 15000+600000
- 639635 words of font info for 69 fonts, out of 8000000 for 9000
+ 21756 strings out of 470404
+ 400416 string characters out of 5485031
+ 872651 words of memory out of 5000000
+ 49779 multiletter control sequences out of 15000+600000
+ 652586 words of font info for 87 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 87i,11n,117p,385b,417s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 87i,14n,117p,546b,419s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on 1st_massma_report.pdf (1 page).
+Output written on 1st_massma_report.pdf (5 pages).
