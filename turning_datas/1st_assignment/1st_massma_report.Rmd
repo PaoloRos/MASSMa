@@ -87,7 +87,7 @@ In order to extract only the data segments corresponding to the actual cutting p
 \label{fig:positions_before_after_filter}
 \end{figure}
 
-Since it was necessary to consider the average power values for each diameter, the data were also filtered to remove abnormal power peaks that could affect the statistical results. To achieve this, for each diameter only the values with a deviation from the mean power lower than twice the standard deviation were retained. In other words, the signal was filtered to include only power values within the interval $\left[ \mu_{P} - 2\sigma_{P}, \mu_{P} + 2\sigma_{P} \right]$ (cf. *Filtering data to avoid power peaks* section of the Python code). As a result, most of the power peaks were effectively attenuated. And the results are that power picks were mostly attenuated.
+Since it was necessary to consider the average power values for each diameter, the data were also filtered to remove abnormal power peaks that could affect the statistical results. To achieve this, for each diameter only the values with a deviation from the mean power lower than twice the standard deviation were retained. In other words, the signal was filtered to include only power values within the interval $\left[ \mu_{P} - 2\sigma_{P}, \mu_{P} + 2\sigma_{P} \right]$ (cf. *Filtering data to avoid power peaks* section of the Python code). As a result, most of the power peaks were effectively attenuated.
 
 \begin{figure}[htbp]
 \centering
@@ -105,7 +105,7 @@ Since it was necessary to consider the average power values for each diameter, t
 \end{figure}
 
 \begin{minipage}[t]{0.55\textwidth}
-In addition, another mask was applied to the first cutting phase at the diameter $X = 46 \,\mathrm{mm}$. As shown in the adjacent figure, in the case of constant cutting speed and cutting measurements (C150), the power initially exhibits a transient increase. Since the analysis focuses on parameter estimation, only the steady-state condition was considered. Therefore, all data before $t = 4 \,\mathrm{s}$ were truncated (cf. \textit{FC150: excluding elements until t = 4} section of the Python code).
+In addition, another mask was applied to the first cutting phase at the diameter $X = 46 \,\mathrm{mm}$. As shown in the adjacent figure, in the case of constant cutting speed with chip-removal (C150), the power initially exhibits a transient increase. Since the analysis focuses on parameter estimation, only the steady-state condition was considered. Therefore, all data before $t = 4 \,\mathrm{s}$ were truncated (cf. \textit{FC150: excluding elements until t = 4} section of the Python code).
 \end{minipage}
 \hfill
 \begin{minipage}[t]{0.4\textwidth}
