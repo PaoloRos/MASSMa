@@ -13,3 +13,18 @@ E_PO_REC(4,0,0,"FR2T D10 ALU FSI","",1,0.05,2,150,2,1,15,3,0,-1,90,3,91,1,0,85,9
 $AN_SLTRACE=0
 E_END(0,1,0);*RO*
 M30 ;#SM;*RO*
+
+
+==== Operations ====
+
+E_MI_PL -> surfacing 
+
+E_DR_PEC -> drilling
+
+E_DR_PEC -> drilling
+
+E_DR_PEC -> drilling
+
+E_DR_PEC -> drilling
+
+E_PO_REC -> pocket milling
