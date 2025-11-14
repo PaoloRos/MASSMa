@@ -18,10 +18,12 @@ fileSession5A1B = "Analyse Usinage/Session5A1B.csv" # cutting
 
 df5A1A = pd.read_csv(fileSession5A1A, skiprows=9)
 df5A1A = df5A1A.iloc[:, :-1]
+df5A1A = df5A1A.apply(pd.to_numeric, errors='coerce')
 df5A1A = df5A1A.dropna()
 
 df5A1B = pd.read_csv(fileSession5A1B, skiprows=9)
 df5A1B = df5A1B.iloc[:, :-1]
+df5A1B = df5A1B.apply(pd.to_numeric, errors='coerce')
 df5A1B = df5A1B.dropna()
 
 # Naming columns
@@ -29,12 +31,42 @@ cols = ['time', 'prog_pos_x', 'meas_pos_x', 'power', 'prog_pos_y', 'meas_pos_y',
 for df in [df5A1A, df5A1B]:
     df.columns = cols
 
-# ---- Power plot ----
+# ---- Cutting Power (of the entire process) ----
 
-plt.plot(df5A1B['time'], df5A1B['power'], marker = '.', linestyle='none')
-plt.xlabel('Time (s)')
-plt.ylabel('Power (W)')
-plt.title('Power vs Time - Cutting')
-plt.grid(True)
+# Calculate the cutting power at the SAME instant time, otherwise insert a Nan in the result
+df150 = (df5A1B.set_index('time')['power'] - df5A1A.set_index('time')['power'])
+
+df150 = df150.reset_index(name='power')
+
+#plt.plot(df5A1B['time'], df5A1B['power'], marker = '.', linestyle='none')
+#plt.xlabel('Time (s)')
+#plt.ylabel('Power (W)')
+#plt.title('Power vs Time - Cutting')
+#plt.grid(True)
+#plt.tight_layout()
+#plt.show()
+#
+#plt.plot(df150['time'], df150['power'], marker = '.', linestyle='none')
+#plt.xlabel('Time (s)')
+#plt.ylabel('Cutting Power (W)')
+#plt.title('Cutting Power vs Time - Cutting')
+#plt.grid(True)
+#plt.tight_layout()
+#plt.show()
+
+fig, axes = plt.subplots(1, 2, figsize=(16, 6))
+
+axes[0].plot(df5A1B['time'], df5A1B['power'], marker='.', linestyle='none')
+axes[0].set_xlabel('Time (s)')
+axes[0].set_ylabel('Power (W)')
+axes[0].set_title('Power vs Time - Cutting Process')
+axes[0].grid(True)
+
+axes[1].plot(df150['time'], df150['power'], marker='.', linestyle='none')
+axes[1].set_xlabel('Time (s)')
+axes[1].set_ylabel('Cutting Power (W)')
+axes[1].set_title('Cutting Power vs Time - Cutting Process')
+axes[1].grid(True)
+
 plt.tight_layout()
 plt.show()
