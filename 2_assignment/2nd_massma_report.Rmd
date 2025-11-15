@@ -1,0 +1,46 @@
+---
+title: "Analysis of Data from TP"
+subtitle: "Surface Milling Part"
+logo: "/Users/paolorossi/Documents/uni_appunti/appunti_uni/unitn_logo.pdf"
+logo_height: "1.5cm"
+author: 
+- Paolo Rossi, 235651, Università di Trento
+date: "`r Sys.Date()`"
+company: "Multi-Agent Systems for Smart Machining - ECIU University"
+output: memor::pdf_memo
+classoption: a4paper
+number_sections: true
+libertine: false
+toc: true
+lof: false
+lot: false
+header-includes:
+  - \numberwithin{equation}{subsection}
+---
+
+```{r setup, echo=F, include=F}
+# Caricamento librerie
+library(knitr)
+library(kableExtra)
+library(readxl)
+library(tidyverse)
+library(ggplot2)
+library(patchwork)
+library(latex2exp)
+library(scales)
+
+# Impostazioni output
+knitr::opts_chunk$set(
+	fig.align  = "center",        # allineamento figure
+	fig.dim    = c(9, 4) * 1.2, # rapporto larghezza/altezza e fattore di scala
+	out.height = "2.8in",       # altezza effettiva figure
+	message    = FALSE,         # sopprimi messaggi
+	warning    = FALSE,         # sopprimi warning
+	echo       = FALSE,          # mostra i codice dei chunk
+	include    = TRUE          # mostra l'output dei chunk
+	#tidy       = TRUE,          # formatta il codice dei chunk
+  #tidy.opts  = list(width.cutoff=I(75)) # massima larghezza codice nei chunk
+)
+```
+
+# Introduction
