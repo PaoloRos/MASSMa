@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.10.31)  15 NOV 2025 14:54
+This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.10.31)  15 NOV 2025 16:05
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -717,11 +717,80 @@ File: /Users/paolorossi/Documents/uni_appunti/appunti_uni/unitn_logo.pdf Graphic
 \tf@toc=\write4
 \openout4 = `2nd_massma_report.toc'.
 
+LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 257.
+(/Users/paolorossi/Library/TinyTeX/texmf-dist/tex/latex/lm/ot1lmr.fd
+File: ot1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+)
+LaTeX Font Info:    Trying to load font information for OML+lmm on input line 257.
+(/Users/paolorossi/Library/TinyTeX/texmf-dist/tex/latex/lm/omllmm.fd
+File: omllmm.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+)
+LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 257.
+(/Users/paolorossi/Library/TinyTeX/texmf-dist/tex/latex/lm/omslmsy.fd
+File: omslmsy.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+)
+LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 257.
+(/Users/paolorossi/Library/TinyTeX/texmf-dist/tex/latex/lm/omxlmex.fd
+File: omxlmex.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+)
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <10.95> on input line 257.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <8> on input line 257.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <6> on input line 257.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 257.
+(/Users/paolorossi/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Trying to load font information for U+msb on input line 257.
+(/Users/paolorossi/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+)
+File: plots/powerS.png Graphic file (type bmp)
+<plots/powerS.png>
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <10> on input line 272.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <7> on input line 272.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <5> on input line 272.
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
 
 
 [1
 
-] 
+]
+File: plots/surf.png Graphic file (type bmp)
+<plots/surf.png>
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+File: plots/pow_stats.png Graphic file (type bmp)
+<plots/pow_stats.png>
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+
+
+[2]
+
+[3]
+File: plots/energy.png Graphic file (type bmp)
+<plots/energy.png>
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+
+
+[4]
+
+[5] 
 enddocument/afterlastpage (AED): lastpage setting LastPage.
 (./2nd_massma_report.aux)
  ***********
@@ -729,15 +798,15 @@ LaTeX2e <2025-06-01> patch level 1
 L3 programming layer <2025-10-24>
  ***********
 Package rerunfilecheck Info: File `2nd_massma_report.out' has not changed.
-(rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
+(rerunfilecheck)             Checksum: BF5F9610BA4962FCDFB87A684646DF6F;200.
  ) 
 Here is how much of TeX's memory you used:
- 21498 strings out of 470404
- 394436 string characters out of 5485031
- 818263 words of memory out of 5000000
- 49574 multiletter control sequences out of 15000+600000
- 628267 words of font info for 52 fonts, out of 8000000 for 9000
+ 21718 strings out of 470404
+ 399059 string characters out of 5485031
+ 832152 words of memory out of 5000000
+ 49740 multiletter control sequences out of 15000+600000
+ 652594 words of font info for 88 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 87i,11n,117p,385b,415s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 87i,13n,117p,385b,417s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on 2nd_massma_report.pdf (1 page).
+Output written on 2nd_massma_report.pdf (5 pages).

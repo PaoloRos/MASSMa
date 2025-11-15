@@ -1,6 +1,6 @@
 ---
 title: "Analysis of Data from TP"
-subtitle: "Surface Milling Part"
+subtitle: "Surface Milling Operation"
 logo: "/Users/paolorossi/Documents/uni_appunti/appunti_uni/unitn_logo.pdf"
 logo_height: "1.5cm"
 author: 
@@ -44,3 +44,116 @@ knitr::opts_chunk$set(
 ```
 
 # Introduction
+
+The machining process under analysis consists of three main operations: surface milling, drilling, and pocket milling. 
+In the following section, the surface milling phase is examined in detail.
+
+Based on the information provided by the students of INSA Toulouse and on the ShopMill code 
+\texttt{E\_MI\_PL("FR\_SURF\_D63\_ALU","FORET5.5\_CARB\_FSI",...);*RO*}, the following machining parameters are defined:
+
+\begin{itemize}
+    \item Tool diameter: $D = 63\,\text{mm}$
+    \item Cutting speed: $V_c = 150\,\text{m/min}$
+    \item Spindle speed: $N = \frac{V_c}{\pi D} =$ `r round(150/(pi*63)*1000,2)` rpm
+\end{itemize}
+
+By examining the power profile over time, it is possible to identify the different phases of the machining process. The Figure \ref{fig:power_profile} shows the total power $P_{{tot}}$ measured during the cutting session, together with the cutting power component $P_c$, computed as $P_c = P_{{tot}} - P_{{nc}}$, where $P_{{nc}}$ represents the no-load power measured during the NON-cutting phase.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.95\linewidth]{plots/powerS.png}
+    \caption{Total power $P_{{tot}}$ and cutting power $P_c$ during the surface milling operation.}
+    \label{fig:power_profile}
+\end{figure}
+
+Ignoring the instantaneous power peaks, it can be observed that the cutting power frequently becomes negative, which is physically impossible, as it would imply that the cutting process generates energy. This behaviour suggests an inconsistency between the cutting and NON-cutting sessions. For this reason, the analysis will be carried out using the total power measured during the cutting session. This choice remains fully representative, since including the no-load power would simply result in a constant offset of the power values.
+
+# Power Consumption per Revolution
+
+Based on the power trend shown in Figure \ref{fig:power_profile}, the surface-milling operation can be identified in the time interval between approximately 18 and 80 seconds, excluding the instantaneous power peaks that do not correspond to steady cutting conditions. In Figure \ref{fig:surf_profile}, the overall profile $P_{tot}$ during the surfacing phase is shown.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.95\linewidth]{plots/surf.png}
+    \caption{Overall power profile $P_{{tot}}$ during the surfacing phase.}
+    \label{fig:surf_profile}
+\end{figure}
+
+To evaluate the power consumption per revolution, the mean, minimum, and maximum power values were computed for each spindle revolution, as reported in Table \ref{tab:stats_rev} and Figure \ref{fig:pow_stats}.
+
+```{r}
+# Caricamento del file CSV
+stats <- read_csv("/Users/paolorossi/Documents/uni_appunti/Magistrale/MASSMa/MASSMa_codes_PAOLO/2_assignment/plots/stats_rev.csv", skip = 1, col_names = c(
+  "Revolution",
+  "mean Power (W)", 
+  "min Power (W)", 
+  "max Power (W)"
+))
+
+# 1) Seleziona le prime 10 righe
+stats10 <- stats %>% 
+  slice(1:10)
+
+# 2) Arrotonda solo le colonne numeriche eccetto Revolution
+stats10_round <- stats10 %>%
+  mutate(
+    Revolution = as.integer(Revolution),
+    across(
+      .cols = where(is.numeric) & !matches("Revolution"),
+      .fns  = ~ round(.x, 2)
+    )
+  )
+
+# 3) Converti tutto in character SOLO per la stampa (Revolution resta int fino a qui!)
+stats10_print <- stats10_round %>%
+  mutate(across(everything(), as.character))
+
+# 4) Crea la riga finale con puntini
+dots_row <- as.data.frame(matrix("...", nrow = 1, ncol = ncol(stats10_print)))
+colnames(dots_row) <- colnames(stats10_print)
+
+# 5) Combina tabella + riga finale
+stats_print <- bind_rows(stats10_print, dots_row)
+
+# 6) Stampa tabella
+kable(stats_print,
+      format = "latex",
+      booktabs = TRUE,
+      caption = "Power consumption statistics.\\label{tab:stats_rev}") %>%
+  kable_styling(latex_options = c("striped", "hold_position"))
+```
+
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.95\linewidth]{plots/pow_stats.png}
+    \caption{Power statistics profile.}
+    \label{fig:pow_stats}
+\end{figure}
+
+\newpage
+
+# Energy Consumption per Revolution
+
+Finally, the energy consumption for each revolution was evaluated. 
+To compute the energy consumed during the $i$-th revolution, the following expression is used:
+\[
+E_i = \int_{t_{0_i}}^{t_{f_i}} P(t)\, dt.
+\]
+
+Since the data are available as discrete samples, the trapezoidal rule is applied:
+\[
+E_i = \sum_{j=i}^{i+n-1} \frac{P_j + P_{j+1}}{2}\,(t_{j+1} - t_j),
+\]
+where $n$ denotes the number of samples contained in the $i$-th revolution.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.95\linewidth]{plots/energy.png}
+    \caption{Energy profile.}
+    \label{fig:energy}
+\end{figure}
+
+
+
+
