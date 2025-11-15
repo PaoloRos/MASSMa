@@ -7,14 +7,14 @@ import numpy as np
 
 # ---- PARAMETERS ----
 
-D = 5.5  #(mm)
+D = 63  #(mm)
 Vc = 150    #(m/min)
 N = Vc/(np.pi * D) * 1000
 
 # ---- FILES UPLOAD ----
 
-fileSession5A1A = "Analyse Usinage/Session5A1A.csv" # NON-cutting
-fileSession5A1B = "Analyse Usinage/Session5A1B.csv" # cutting
+fileSession5A1A = "data/Session5A1A.csv" # NON-cutting
+fileSession5A1B = "data/Session5A1B.csv" # cutting
 
 df5A1A = pd.read_csv(fileSession5A1A, skiprows=9)
 df5A1A = df5A1A.iloc[:, :-1]
@@ -54,7 +54,7 @@ df150 = df150.reset_index(name='power')
 #plt.tight_layout()
 #plt.show()
 
-fig, axes = plt.subplots(1, 2, figsize=(16, 6))
+fig, axes = plt.subplots(2, 1, figsize=(12, 10))
 
 axes[0].plot(df5A1B['time'], df5A1B['power'], marker='.', linestyle='none')
 axes[0].set_xlabel('Time (s)')
@@ -68,5 +68,23 @@ axes[1].set_ylabel('Cutting Power (W)')
 axes[1].set_title('Cutting Power vs Time - Cutting Process')
 axes[1].grid(True)
 
+plt.tight_layout()
+plt.show()
+plt.close(fig) 
+
+# ---- Surface Milling ----
+
+df150 = df150[(df150['time'] >= 18) & (df150['time'] <= 80)]
+
+# Revolution counter (just in the surfacing interval!)
+Trev = 60/N # (s) revolution period
+df150['revolution'] = ((df150['time'] - df150['time'].iloc[0])/Trev).astype(int)
+df150.insert(0, 'rev', df150.pop('rev'))
+
+plt.plot(df150['time'], df150['power'], marker='.', linestyle='none')
+plt.xlabel('Time (s)')
+plt.ylabel('Power (W)')
+plt.title('Cutting Power vs Time - Cutting Process')
+plt.grid(True)
 plt.tight_layout()
 plt.show()
