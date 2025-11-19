@@ -154,6 +154,11 @@ where $n$ denotes the number of samples contained in the $i$-th revolution.
     \label{fig:energy}
 \end{figure}
 
+\newpage
+
+
+
+
 
 
 

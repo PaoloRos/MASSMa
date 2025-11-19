@@ -1,3 +1,11 @@
+# 2nd Assignment - Data Analysis from TP
+# MASSMa Course
+#
+# Paolo Rossi, 235651, Università di Trento
+# Trento 15/11/2025
+#
+#
+
 import pandas as pd
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
@@ -38,24 +46,88 @@ df150 = (df5A1B.set_index('time')['power'] - df5A1A.set_index('time')['power'])
 
 df150 = df150.reset_index(name='power')
 
+#fig, axes = plt.subplots(2, 1, figsize=(12, 10))
+#
+#axes[0].plot(df5A1B['time'], df5A1B['power'], marker='.', linestyle='none')
+#axes[0].set_xlabel('Time (s)')
+#axes[0].set_ylabel('Power (W)')
+#axes[0].set_title('Power vs. Time - Cutting Session')
+#axes[0].grid(True)
+#
+#axes[1].plot(df150['time'], df150['power'], marker='.', linestyle='none')
+#axes[1].set_xlabel('Time (s)')
+#axes[1].set_ylabel('Cutting Power (W)')
+#axes[1].set_title('Cutting Power vs. Time - Cutting Session')
+#axes[1].grid(True)
+#
+#plt.tight_layout()
+#plt.savefig("plots/powerS.png", dpi=300, bbox_inches='tight')
+##plt.show()
+#plt.close(fig) 
+
 fig, axes = plt.subplots(2, 1, figsize=(12, 10))
 
+# --- Parametri intervalli operazioni ---
+intervals = [
+    (18, 80, 'Surfacing'),
+    (90, 130, 'Drilling'),
+    (140, 280, 'Pocket formation')
+]
+
+# --- Primo grafico ---
 axes[0].plot(df5A1B['time'], df5A1B['power'], marker='.', linestyle='none')
 axes[0].set_xlabel('Time (s)')
-axes[0].set_ylabel('Power (W)')
+axes[0].set_ylabel('Power (kW)')
 axes[0].set_title('Power vs. Time - Cutting Session')
 axes[0].grid(True)
 
+# Aggiungi linee e annotazioni
+for start, end, label in intervals:
+    axes[0].axvline(start, color='gray', linestyle='--')
+    axes[0].axvline(end, color='gray', linestyle='--')
+    
+    # Testo operazione (rimane in alto)
+    axes[0].annotate(
+        label,
+        xy=((start + end) / 2, axes[0].get_ylim()[1] * 0.95),
+        ha='center', va='top', fontsize=11
+    )
+    
+    # Freccia più in basso
+    axes[0].annotate(
+        '',
+        xy=(start, axes[0].get_ylim()[1] * 0.85),
+        xytext=(end, axes[0].get_ylim()[1] * 0.85),
+        arrowprops=dict(arrowstyle='<->')
+    )
+
+
+# --- Secondo grafico ---
 axes[1].plot(df150['time'], df150['power'], marker='.', linestyle='none')
 axes[1].set_xlabel('Time (s)')
-axes[1].set_ylabel('Cutting Power (W)')
+axes[1].set_ylabel('Cutting Power (kW)')
 axes[1].set_title('Cutting Power vs. Time - Cutting Session')
 axes[1].grid(True)
 
+# Aggiungi linee e annotazioni
+for start, end, label in intervals:
+    axes[1].axvline(start, color='gray', linestyle='--')
+    axes[1].axvline(end, color='gray', linestyle='--')
+    axes[1].annotate(
+        label,
+        xy=((start + end) / 2, axes[1].get_ylim()[1] * 0.95),
+        ha='center', va='top', fontsize=11
+    )
+    axes[1].annotate(
+        '',
+        xy=(start, axes[1].get_ylim()[1] * 0.85),
+        xytext=(end, axes[1].get_ylim()[1] * 0.85),
+        arrowprops=dict(arrowstyle='<->')
+    )
+
 plt.tight_layout()
-plt.savefig("plots/powerS.png", dpi=300, bbox_inches='tight')
-#plt.show()
-plt.close(fig) 
+plt.savefig("plots/power_COMPARISON.png", dpi=300, bbox_inches='tight')
+plt.close(fig)
 
 # ---- Surface Milling ----
 
