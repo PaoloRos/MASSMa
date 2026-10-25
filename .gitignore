@@ -3,6 +3,7 @@
 
 local_scratch/
 QUESTION.md
+__pycache__/
 
 # Microsoft Office temporary lock files
 ~$*
