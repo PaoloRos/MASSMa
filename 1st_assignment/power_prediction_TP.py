@@ -51,13 +51,12 @@ N_const = 1200    # rpm
 Kc_n = 3230.3     # MPa, specific cutting pressure at constant N
 
 # %%
-# Removing a radial depth ap reduces the diameter by 2 * ap per block.
-# The model assumes the diameter reduction is an integer number of blocks.
-n = int((Ds - De) / (2 * ap))  # number of blocks
-D = np.arange(Ds, De - ap, -2*ap)    # mm
-
-# Starting diameter of each of the n blocks; D also includes the final boundary.
-D_passes = D[:-1]
+# Evaluate one block at each diameter, including both Ds and De.
+# Adjacent diameters differ by 2 * ap (the diametral depth of cut).
+# The model assumes Ds - De is an integer multiple of 2 * ap.
+D = np.arange(Ds, De - ap, -2 * ap)  # mm: 46, 44, ..., 24
+D_passes = D.copy()
+n = len(D_passes)  # 12 prediction blocks, including the 24 mm block
 
 # --- Power prediction ---
 
@@ -91,9 +90,9 @@ t_n = np.full(n, 2*L / Vf_n * 60)                          # s
 # %%
 # Save one row per predicted block, separately for the two operating modes.
 # time_s is the block start, time_end_s its end, and duration_s its length.
-# All remaining parameters apply over that entire interval. Diameter is the
-# starting diameter used in the prediction; the final diameter is a boundary,
-# so it does not generate an extra row. This matches the plotted steps.
+# All remaining parameters apply over that entire interval. Each listed
+# diameter, including De, has its own row and plotted step. Durations retain
+# the notebook's assumption of a travel distance of 2 * L for each block.
 time_edges_vc = np.concatenate(([0], np.cumsum(t_vc)))
 time_edges_n = np.concatenate(([0], np.cumsum(t_n)))
 
