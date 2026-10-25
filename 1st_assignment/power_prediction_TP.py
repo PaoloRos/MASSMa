@@ -38,13 +38,13 @@ OUTPUT_DPI = 200
 
 # %%
 # Workpiece parameters
-L = 40            # mm
-Ds = 46           # mm
-De = 24           # mm
+L = 40            # mm, axial cutting length of one forward pass
+Ds = 46           # mm, diameter machined by the first pass (initial stock: 48 mm)
+De = 24           # mm, diameter machined by the final pass
 
 # Tool parameters
-ap = 1            # mm
-f = 0.2           # mm/rev
+ap = 1            # mm, radial depth of cut; each pass reduces diameter by 2 * ap
+f = 0.2           # mm/rev, axial feed per spindle revolution
 Vc_const = 150    # m/min
 Kc_vc = 3025.6    # MPa, specific cutting pressure at constant Vc
 N_const = 1200    # rpm
@@ -68,7 +68,7 @@ Fc_vc = Kc_vc * ap * f                   # N
 Pc_vc = np.full(n, Fc_vc * Vc_const / 60)   # W
 
 # At constant spindle speed, Vc = pi * D * N / 1000 (mm to metres).
-# As the starting diameter decreases, cutting speed and power decrease.
+# As the machined diameter decreases, cutting speed and power decrease.
 # Power for N constant
 Vc = np.pi * D_passes * N_const / 1000              # m/min
 Fc_n = Kc_n * ap * f                          # N
@@ -77,22 +77,25 @@ Pc_n = Fc_n * Vc / 60                          # W
 # %%
 # --- Timing prediction ---
 
-# Feed speed is f * N in mm/min. Each block covers 2 * L mm.
-# At constant Vc, N increases as diameter decreases, shortening the blocks.
+# Feed speed is f * N in mm/min. Only the forward stroke cuts over length L.
+# The tool retracts and returns rapidly: that stroke is not another L at Vf.
+# Cutting time is L / Vf (minutes), multiplied by 60 to obtain seconds.
+# Return, approach and positioning times are excluded from this prediction.
+# At constant Vc, N increases as diameter decreases, shortening cutting times.
 N_vc = Vc_const * 1000 / (np.pi * D_passes)  # rpm
 Vf_vc = f * N_vc                             # mm/min
-t_vc = 2*L / Vf_vc * 60                      # s
+t_vc = L / Vf_vc * 60                       # s, cutting time per pass
 
 # At constant N, the feed speed and all block durations are identical.
 Vf_n = f * N_const                             # mm/min
-t_n = np.full(n, 2*L / Vf_n * 60)                          # s
+t_n = np.full(n, L / Vf_n * 60)             # s, 10 s per cutting pass
 
 # %%
 # Save one row per predicted block, separately for the two operating modes.
-# time_s is the block start, time_end_s its end, and duration_s its length.
+# time_s and time_end_s are cumulative cutting times, not machine-cycle times;
+# duration_s is the cutting duration of that pass. Non-cutting gaps are omitted.
 # All remaining parameters apply over that entire interval. Each listed
-# diameter, including De, has its own row and plotted step. Durations retain
-# the notebook's assumption of a travel distance of 2 * L for each block.
+# diameter, including De, has its own row and plotted step, covering length L.
 time_edges_vc = np.concatenate(([0], np.cumsum(t_vc)))
 time_edges_n = np.concatenate(([0], np.cumsum(t_n)))
 
@@ -131,7 +134,7 @@ ax.stairs(Pc_vc, time_edges_vc, baseline=None, color='#2166ac', linewidth=2)
 # Dashed vertical lines mark internal block boundaries.
 for boundary in time_edges_vc[1:-1]:
     ax.axvline(boundary, color='gray', linestyle='--', linewidth=0.8, alpha=0.7)
-ax.set_xlabel('Time (s)')
+ax.set_xlabel('Cumulative cutting time (s)')
 ax.set_ylabel('Power (W)')
 ax.set_title('Predicted Cutting Power — Constant Cutting Speed')
 ax.set_xlim(0, time_edges_vc[-1])
@@ -159,7 +162,7 @@ ax.stairs(Pc_n, time_edges_n, baseline=None, color='#b35806', linewidth=2)
 # Dashed vertical lines mark internal block boundaries.
 for boundary in time_edges_n[1:-1]:
     ax.axvline(boundary, color='gray', linestyle='--', linewidth=0.8, alpha=0.7)
-ax.set_xlabel('Time (s)')
+ax.set_xlabel('Cumulative cutting time (s)')
 ax.set_ylabel('Power (W)')
 ax.set_title('Predicted Cutting Power — Constant Spindle Speed')
 ax.set_xlim(0, time_edges_n[-1])
