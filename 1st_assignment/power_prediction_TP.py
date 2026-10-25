@@ -8,32 +8,30 @@ Date: 2026-10-25
 
 # %% Imports and output settings
 from pathlib import Path
+import sys
+
+# Scripts start from their location; interactive cells start from the working directory.
+_settings_start = Path(__file__).resolve().parent if '__file__' in globals() else Path.cwd()
+for _settings_root in (_settings_start, *_settings_start.parents):
+    if (_settings_root / 'repo_settings.py').is_file():
+        if str(_settings_root) not in sys.path:
+            sys.path.insert(0, str(_settings_root))
+        break
+else:
+    raise FileNotFoundError(
+        "Cannot find repo_settings.py. Run interactive cells from within the repository."
+    )
+
 import os
 
-import numpy as np
-import matplotlib
+from repo_settings import configure_plots, output_dir, save_figure
 
-# Use a non-interactive backend: save figures without opening plot windows.
-matplotlib.use('Agg')
+configure_plots(headless=True)
+import numpy as np
 import matplotlib.pyplot as plt
 
-# Use the script location normally. Interactive cells may not define __file__;
-# in that case, run from the project root or from 1st_assignment.
-if '__file__' in globals():
-    SCRIPT_DIR = Path(__file__).resolve().parent
-else:
-    SCRIPT_DIR = Path.cwd()
-    if (SCRIPT_DIR / '1st_assignment').is_dir():
-        SCRIPT_DIR = SCRIPT_DIR / '1st_assignment'
-OUTPUT_DIR = SCRIPT_DIR / 'outputs'
-OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-
-# Golden ratio applies to the whole figure canvas: width / height = phi.
-# Do not use bbox_inches='tight' when saving: it would change that ratio.
-GOLDEN_RATIO = (1 + np.sqrt(5)) / 2
-FIGURE_WIDTH = 10  # inches
-FIGURE_SIZE = (FIGURE_WIDTH, FIGURE_WIDTH / GOLDEN_RATIO)
-OUTPUT_DPI = 200
+SCRIPT_DIR = Path(__file__).resolve().parent if '__file__' in globals() else _settings_root / '1st_assignment'
+OUTPUT_DIR = output_dir(SCRIPT_DIR)
 
 
 # %%
@@ -128,7 +126,7 @@ print(f'Saved: {os.path.relpath(output_path, Path.cwd())}')
 # %%
 # Power vs time: Vc constant
 
-fig, ax = plt.subplots(figsize=FIGURE_SIZE)
+fig, ax = plt.subplots()
 # Draw each power value over its own time interval.
 ax.stairs(Pc_vc, time_edges_vc, baseline=None, color='#2166ac', linewidth=2)
 # Dashed vertical lines mark internal block boundaries.
@@ -147,7 +145,7 @@ ax.grid(axis='y', alpha=0.25)
 fig.tight_layout()
 # Save the full canvas to preserve the golden ratio (up to pixel rounding).
 output_path = OUTPUT_DIR / 'prediction_power_vs_time_constant_vc.png'
-fig.savefig(output_path, dpi=OUTPUT_DPI, facecolor='white', bbox_inches=None)
+save_figure(fig, output_path)
 plt.close(fig)
 # Relative paths avoid spaces in the project location and are clickable in VS Code.
 # Cmd-click the path in the integrated terminal to open the PNG preview.
@@ -156,7 +154,7 @@ print(f'Saved: {os.path.relpath(output_path, Path.cwd())}')
 # %%
 # Power vs time: N constant
 
-fig, ax = plt.subplots(figsize=FIGURE_SIZE)
+fig, ax = plt.subplots()
 # Draw each power value over its own time interval.
 ax.stairs(Pc_n, time_edges_n, baseline=None, color='#b35806', linewidth=2)
 # Dashed vertical lines mark internal block boundaries.
@@ -175,7 +173,7 @@ ax.grid(axis='y', alpha=0.25)
 fig.tight_layout()
 # Save the full canvas to preserve the golden ratio (up to pixel rounding).
 output_path = OUTPUT_DIR / 'prediction_power_vs_time_constant_n.png'
-fig.savefig(output_path, dpi=OUTPUT_DPI, facecolor='white', bbox_inches=None)
+save_figure(fig, output_path)
 plt.close(fig)
 # Relative paths avoid spaces in the project location and are clickable in VS Code.
 # Cmd-click the path in the integrated terminal to open the PNG preview.

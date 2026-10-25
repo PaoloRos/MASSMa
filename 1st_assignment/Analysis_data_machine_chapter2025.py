@@ -1,3 +1,22 @@
+from pathlib import Path
+import sys
+
+# Scripts start from their location; interactive cells start from the working directory.
+_settings_start = Path(__file__).resolve().parent if '__file__' in globals() else Path.cwd()
+for _settings_root in (_settings_start, *_settings_start.parents):
+    if (_settings_root / 'repo_settings.py').is_file():
+        if str(_settings_root) not in sys.path:
+            sys.path.insert(0, str(_settings_root))
+        break
+else:
+    raise FileNotFoundError(
+        "Cannot find repo_settings.py. Run interactive cells from within the repository."
+    )
+
+from repo_settings import configure_plots
+
+configure_plots()
+
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
@@ -121,7 +140,7 @@ energy_by_x_NC1200 = dfNC1200.groupby('prog_pos_x')['energy_kJ'].sum().reset_ind
 Filt_energy_by_x_NC1200 = energy_by_x_NC1200[energy_by_x_NC1200['energy_kJ'] > 0.15]
 
 # ####################################################
-plt.figure(figsize=(8, 4))
+plt.figure()
 # Plot C150
 plt.plot(dfC150['prog_pos_z'], dfC150['prog_pos_x'], label='C150', color='brown',marker='o', linestyle='None') #linestyle='-')
 # Plot NC150
@@ -137,7 +156,7 @@ plt.show()
 
 
 # ========= GRAPHE Power =========
-plt.figure(figsize=(8, 4))
+plt.figure()
 # Plot C150
 plt.plot(dfC150['time'], dfC150['power'], label='C150', color='brown') 
 # Plot NC150
@@ -150,7 +169,7 @@ plt.legend()
 plt.tight_layout()
 plt.show()
 
-plt.figure(figsize=(8, 4))
+plt.figure()
 plt.plot(dfC1200['time'], dfC1200['power'], label='C1200', color='brown')
 plt.plot(dfNC1200['time'], dfNC1200['power'], label='NC1200', color='darkblue')
 plt.xlabel('Time (s)')
@@ -188,7 +207,7 @@ plt.tight_layout()
 plt.show()
 
 # Plotting
-plt.figure(figsize=(10, 5))
+plt.figure()
 plt.plot(Filt_energy_by_x_C150['prog_pos_x'], Filt_energy_by_x_C150['energy_kJ'],linestyle='None', marker='o', label='C150')
 plt.plot(Filt_energy_by_x_NC150['prog_pos_x'], Filt_energy_by_x_NC150['energy_kJ'],linestyle='None', marker='*', label='NC150')
 plt.plot(Filt_energy_by_x_C1200['prog_pos_x'], Filt_energy_by_x_C1200['energy_kJ'],linestyle='None', marker='o', label='C1200')
@@ -244,7 +263,7 @@ bar_width = 0.4
 x = np.arange(len(labels))  # positions x
 
 # Tracer les barres
-plt.figure(figsize=(12, 5))
+plt.figure()
 bars_C = plt.bar(x - bar_width/2, mean_values_C, width=bar_width, color='skyblue', label='Cutting')
 bars_NC = plt.bar(x + bar_width/2, mean_values_NC, width=bar_width, color='lightgreen', label='No Cutting')
 
@@ -301,7 +320,7 @@ mean_values_NC = list(mean_powersNC1200.values())
 bar_width = 0.4
 x = np.arange(len(labels))
 
-plt.figure(figsize=(12, 5))
+plt.figure()
 bars_C = plt.bar(x - bar_width/2, mean_values_C, width=bar_width, color='skyblue', label='Cutting')
 bars_NC = plt.bar(x + bar_width/2, mean_values_NC, width=bar_width, color='lightgreen', label='No Cutting')
 
