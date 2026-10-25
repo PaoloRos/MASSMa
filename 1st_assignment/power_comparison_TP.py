@@ -1,4 +1,9 @@
-"""Compare experimental and predicted cutting power at constant Vc and N.
+"""
+Compare experimental and predicted cutting power at constant Vc and N.
+
+Author: Paolo Rossi
+Co-author: GPT (GPT-6)
+Date: 2026-10-25
 
 Port of local_scratch/power_comparison.ipynb. Comparisons and pass averages
 use raw power without moving-average filtering. Prediction amplitudes come
