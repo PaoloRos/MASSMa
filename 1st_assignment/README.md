@@ -14,8 +14,8 @@ In this assignment you have to:
 
 For that, you should identify the power for cutting during steady state and the power for the spindle without cutting
 
-4) Using this specific cutting pressure and cutting speed, predict the curve of the following drilling process :
+4) Using this specific cutting pressure and cutting speed (of the smaller diameter in turning at constant spindle speed), predict the curve of the following drilling process :
 
-- pre-Drilling with 5 mm diameter, 120 degrees point angle, machining length 10 mm, feed per revolution 0,2 mm 
+  - pre-Drilling with 5 mm diameter, 120 degrees point angle, machining length 10 mm, feed per revolution 0,2 mm 
 
-- Drilling in the same position with 13 mm diameter, 120 degrees point angle, machining length 20 mm, feed per revolution 0,2 mm
+  - Drilling in the same position with 13 mm diameter, 120 degrees point angle, machining length 20 mm, feed per revolution 0,2 mm
