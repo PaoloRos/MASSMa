@@ -1,0 +1,198 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=18mm,headheight=13pt,headsep=5mm,footskip=9mm]{geometry}
+\usepackage{amsmath,amssymb,graphicx,booktabs,array}
+\usepackage[table]{xcolor}
+\usepackage{caption,titlesec,fancyhdr}
+\usepackage[colorlinks=true,urlcolor=blue!55!black,linkcolor=blue!55!black,citecolor=blue!55!black]{hyperref}
+\definecolor{navy}{HTML}{173A55}
+\definecolor{pale}{HTML}{EDF3F7}
+\titleformat{\section}{\large\sffamily\bfseries\color{navy}}{\thesection}{0.65em}{}
+\titleformat{\subsection}{\normalsize\sffamily\bfseries\color{navy}}{\thesubsection}{0.65em}{}
+\titlespacing*{\section}{0pt}{9pt}{5pt}
+\titlespacing*{\subsection}{0pt}{7pt}{4pt}
+\captionsetup{font=small,labelfont=bf,skip=4pt,hypcap=false}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\renewcommand{\arraystretch}{1.18}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Assignment 1}
+\fancyhead[R]{\small Paolo Rossi -- 277177}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\newcommand{\unitkc}{\ensuremath{\mathrm{N/mm^2}}}
+\newcommand{\sourcecite}[2]{\hyperlink{source:#1}{[#2]}}
+\newcommand{\code}[2]{\href{https://github.com/PaoloRos/MASSMa/blob/main/1st_assignment/#1}{\texttt{\small #2}}}
+\newcommand{\reportfigure}[4][\linewidth]{%
+ \begin{center}
+ \includegraphics[width=#1]{images/#2}
+ \captionof{figure}{#3}\label{#4}
+ \end{center}}
+\input{generated/results.tex}
+\hypersetup{pdftitle={Assignment 1},pdfauthor={Paolo Rossi; AI co-author: ChatGPT (GPT-6)},
+ pdfsubject={Multi Agent Systems for Smart Machining, ECIU Micro-Module}}
+\begin{document}
+\thispagestyle{plain}
+\begin{minipage}[c]{0.74\linewidth}
+ {\Huge\sffamily\bfseries\color{navy} Assignment 1}\\[5pt]
+ {\large Multi Agent Systems for Smart Machining}\\[2pt]
+ {\normalsize ECIU Micro-Module}\\[3pt]
+ Offered by INSA Toulouse \enspace$\cdot$\enspace Academic Year 2026/27
+\end{minipage}\hfill
+\begin{minipage}[c]{0.23\linewidth}
+ \raggedleft\includegraphics[width=\linewidth]{images/unitn_logo.png}
+\end{minipage}
+\par\vspace{5pt}
+{\bfseries Paolo Rossi -- 277177}\hfill \ReportDate
+\par{\bfseries\color{navy}Status: To Be Reviewed}
+\par\vspace{3pt}\hrule\vspace{3pt}
+{\small\textbf{Abstract.}
+Turning power is compared with chapter-based predictions for constant cutting speed and constant spindle speed. Maximum pass-mean deviations are \MaxErrorVc\% and \MaxErrorN\%, respectively. Mean specific cutting pressures are \MeanKcVc\ and \MeanKcN~\unitkc. Transferring the final constant-$N$ pass estimate to drilling predicts \PrePower~kW for pre-drilling and \DrillPower~kW for full drilling, with entry ramps and a pilot-bottom power step.}
+
+\section{Process Parameters and Predictions}
+An AISI 4135 bar is turned from 48 to 24~mm over an axial length of 40~mm, using a DNMG NC5330 coated carbide tool~\sourcecite{chapter}{1}. Twelve passes machine diameters $D=46,44,\ldots,24$~mm with radial depth $a_p=1$~mm and feed $f=0.2$~mm/rev.
+
+The programs maintain either $v_c=150$~m/min or $N=1200$~rpm. Subtracting the air-cutting trace at matching timestamps estimates cutting power:
+\begin{equation}
+ P_c=P_m-P_{nc},\qquad
+ P_c=\frac{K_c v_c f a_p}{60},\qquad
+ t_c=\frac{60L}{fN}.
+ \label{eq:turning}
+\end{equation}
+The smallest-diameter chapter values, $K_c=3025.6$ and $3230.3$~\unitkc, respectively, are held constant across the prediction passes.
+
+\begin{center}\small
+\captionof{table}{Turning predictions. Arrows follow the diameter reduction from 46 to 24~mm.}\label{tab:predictions}
+\begin{tabular}{@{}lrrrr@{}}\toprule
+Mode & $v_c$ (m/min) & $N$ (rpm) & $P_c$ (kW) & $t_c$/Pass (s)\\\midrule
+\PredictionRows
+\bottomrule\end{tabular}
+\end{center}
+Constant $v_c$ preserves predicted cutting power while spindle speed rises and pass duration decreases. Constant $N$ reduces cutting speed and power while keeping each predicted pass at 10~s. The timing model assumes full engagement over $L$; entry ramps, return moves and positioning are excluded.
+
+\subsection{Timing Comparison}
+\begin{center}\small
+\captionof{table}{Predicted versus threshold-detected cutting time. Gaps are excluded; MAE is the mean absolute error of the 12 pass durations.}\label{tab:timing}
+\begin{tabular}{@{}lrrrr@{}}\toprule
+Mode & Predicted (s) & Detected (s) & Difference (\%) & MAE (s)\\\midrule
+\TimingRows
+\bottomrule\end{tabular}
+\end{center}
+Detected durations use the same windows as the power comparison, including the last sample interval ($T_s=\SamplePeriod$~s). The signed total difference is $100(T_{\rm det}-T_{\rm pred})/T_{\rm pred}$. Constant-$N$ timing agrees closely; constant-$v_c$ detection gives a shorter total. Threshold windows do not by themselves establish the physical cause of this difference. Comparison plots align prediction levels to detected windows, so they assess amplitude rather than independently validating timing.
+
+{\small Implementation: \code{power_prediction_TP.py}{power\_prediction\_TP.py} and \code{power_comparison_TP.py}{power\_comparison\_TP.py}.}
+
+\newpage
+\section{Turning Power Comparison (Tasks 1 and 2)}
+\subsection{Constant Cutting Speed}
+\reportfigure{power_comparison_constant_vc.png}{Raw idle-subtracted cutting power and predicted levels at constant $v_c$. The 12 predicted plateaus are aligned to detected cutting intervals; gaps remain on the measured time axis.}{fig:comparisonvc}
+
+\begin{center}\small
+\captionof{table}{Constant-$v_c$ results for all passes. The standard deviation (SD) describes raw samples within each detected interval.}\label{tab:comparisonvc}
+\begin{tabular}{@{}rrrrrr@{}}\toprule
+Pass & $D$ (mm) & Predicted (kW) & Mean (kW) & SD (kW) & Deviation (\%)\\\midrule
+\PowerVcRows
+\bottomrule\end{tabular}
+\end{center}
+\begin{equation}
+ \text{Deviation}=100\,\frac{\overline P_{\rm exp}-P_{\rm pred}}{P_{\rm pred}}.
+ \label{eq:deviation}
+\end{equation}
+Measured pass means remain close to the constant \PredPowerVc~kW prediction: the maximum absolute deviation is \MaxErrorVc\%, and the mean absolute percentage deviation is \MeanErrorVc\%. Short spikes increase the within-pass SD but have a smaller effect on pass means.
+
+Intervals are continuous segments above 0.5~kW lasting at least 2~s. Detection at constant $v_c$ uses raw power. Means and sample SDs ($n-1$ denominator) also use raw samples, without extra entry/exit trimming. Pass averaging is sufficient for the present power comparison; this does not imply that individual samples are noise-free.
+
+\newpage
+\subsection{Constant Spindle Speed}
+\reportfigure{power_comparison_constant_n.png}{Raw idle-subtracted cutting power and predicted levels at constant $N=1200$~rpm. Both decrease with diameter; pass numbers identify the chronological pairing with prediction rows.}{fig:comparisonn}
+
+\begin{center}\small
+\captionof{table}{Constant-$N$ results for all passes. Predictions use the chapter's final-pass $K_c$ throughout.}\label{tab:comparisonn}
+\begin{tabular}{@{}rrrrrr@{}}\toprule
+Pass & $D$ (mm) & Predicted (kW) & Mean (kW) & SD (kW) & Deviation (\%)\\\midrule
+\PowerNRows
+\bottomrule\end{tabular}
+\end{center}
+The measured mean decreases from \FirstMeanN\ to \LastMeanN~kW. Predictions overestimate all pass means, with deviations ranging from $-\MaxErrorN$\% to $-\MinErrorN$\%; the mean absolute percentage deviation is \MeanErrorN\%.
+
+A short centered median (\MedianSamplesN\ samples, approximately 0.10~s) is used only to detect intervals above 0.5~kW lasting at least 2~s. Statistics are calculated from raw samples within those windows, with no additional trimming. This prevents brief dips from splitting the last passes while preserving their measured variability.
+
+Agreement is with a chapter-based prediction, not independent model validation: the reference $K_c$ values were derived from the same experimental case~\sourcecite{chapter}{1}. Holding the final-pass value fixed also omits the variation of estimated $K_c$ across the constant-$N$ passes.
+
+\newpage
+\section{Specific Cutting Pressure (Task 3)}
+\subsection{Constant Cutting Speed}
+For each retained sample, specific cutting pressure is calculated as
+\begin{equation}
+ K_c[i]=\frac{60P_c[i]}{v_c f a_p},
+ \label{eq:kc}
+\end{equation}
+using $P_c$ in W. Each pass is summarized by its sample mean and sample SD. The implementation is linked in \code{kc_estimation_TP.py}{kc\_estimation\_TP.py}.
+
+\reportfigure{kc_windows_constant_vc.png}{Constant-$v_c$ selection: orange dashed outlines are nominal windows beginning at detected entries and lasting the predicted duration; blue shading marks the samples retained for $K_c$. Gray is raw power and blue is the 55-sample moving average.}{fig:kcvc}
+
+At constant $v_c$, a centered 55-sample moving average (0.495~s support) is used. Its width was selected qualitatively and iteratively relative to the shortest cutting interval; filter-tuning steps are omitted. Entries and exits are detected at 1~kW using a \MedianSamplesVc\mbox{-sample} median (approximately 0.20~s), with intervals shorter than 2~s discarded. The median serves detection only.
+
+Each window ends at the earlier of the predicted end and detected exit. Trimming 27 samples at either boundary keeps the entire centered moving-average support inside the cut. No $K_c$-based outlier removal is applied. The early passes retain appreciable variation despite smoothing; the later retained traces are steadier.
+
+Across the 12 pass means, the equal-weight mean is \MeanKcVc~\unitkc. The between-pass sample SD is \BetweenSdVc~\unitkc. Table~\ref{tab:kc} gives all per-pass results.
+
+\newpage
+\subsection{Constant Spindle Speed}
+\reportfigure{kc_windows_constant_n.png}{Constant-$N$ selection: raw cutting power is used for $K_c$; blue shading marks retained samples. Orange nominal windows last 10~s, while retained windows stop at the earlier of the nominal end and detected exit.}{fig:kcn}
+
+The 0.5~kW threshold, approximately 0.10~s detection median and 2~s minimum duration match the power comparison. The lower threshold retains the late passes as cutting power falls. No moving average, transition margin, clipping or outlier rejection is applied. Averaging reduces random fluctuations but does not remove systematic bias.
+
+\begin{center}\small
+\captionof{table}{Specific cutting pressure for both modes, in \unitkc. SD is within-pass variability: filtered samples at constant $v_c$ and raw samples at constant $N$.}\label{tab:kc}
+\begin{tabular}{@{}rrrrr@{}}\toprule
+& \multicolumn{2}{c}{Constant $v_c$} & \multicolumn{2}{c}{Constant $N$}\\
+$D$ (mm) & Mean $K_c$ & SD & Mean $K_c$ & SD\\\midrule
+\KcRows
+\bottomrule\end{tabular}
+\end{center}
+The equal-weight mean is \MeanKcN~\unitkc\ at constant $N$, with \BetweenSdN~\unitkc\ sample SD between pass means. Estimated $K_c$ rises as cutting speed decreases, from \FirstKcN\ to \LastKcN~\unitkc. The constant-$N$ mean is \KcDifference\% above the constant-$v_c$ mean.
+
+Within-pass SDs in Table~\ref{tab:kc} are not confidence intervals or uncertainties on the overall mean. Filtering differs between modes, so their SD magnitudes cannot be compared as equivalent measures of process stability.
+
+\newpage
+\section{Drilling Prediction (Task 4)}
+The final constant-$N$ turning pass ($D=24$~mm) supplies $K_c=\LastKcN$~\unitkc\ and $v_c=\ReferenceVc$~m/min. Each drill uses this outer-edge cutting speed, giving different spindle speeds. Feed is the total axial feed per revolution; no extra cutting-lip multiplier is applied~[\hyperlink{source:slides}{2},\hyperlink{source:sandvik}{3}].
+
+\begin{center}\small
+\captionof{table}{Drilling inputs and predictions. Duration runs from first material contact to stopping.}\label{tab:drilling}
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}lrrrrrr@{}}\toprule
+Phase & $D$ (mm) & Depth (mm) & Angle & $N$ (rpm) & Duration (s) & Peak (kW)\\\midrule
+\DrillingRows
+\bottomrule\end{tabular}
+\end{center}
+Both tools have a $120^\circ$ point angle and $f=0.2$~mm/rev. Tip depths are measured from the original surface: 10~mm for the blind conical pilot and 20~mm for the larger drill. The plotted 0.5~s interstage lag is illustrative; the 0.1~s initial padding is not cutting time.
+
+\reportfigure{prediction_power_vs_time_drilling.png}{Predicted rotational cutting power. Entry ramps lead to full engagement. The 13~mm drill first removes an annulus, then reaches the pilot bottom and rises from \AnnularPower\ to \DrillPower~kW as the inner lips engage.}{fig:drilling}
+
+For an engaged radial interval $[r_i,r_o]$ in mm,
+\[
+ M_c=\frac{K_cf(r_o^2-r_i^2)}{2000},\qquad
+ P_c=M_c\frac{2\pi N}{60}.
+\]
+Equal point angles give simultaneous inner-lip engagement at the pilot bottom, idealized as a power step. The model omits chisel-edge effects, friction, spindle losses and withdrawal. Implementation: \code{power_prediction_DP.py}{power\_prediction\_DP.py}.
+
+\newpage
+\section{Conclusions}
+\label{sec:conclusions}
+Pass means follow both predicted turning profiles (Tables~\ref{tab:comparisonvc} and~\ref{tab:comparisonn}). Cutting times agree closely at constant $N$ and are shorter than predicted at constant $v_c$ (Table~\ref{tab:timing}).
+
+The transferred final-pass $K_c$ predicts \PrePower~kW pre-drilling and \DrillPower~kW full drilling (Table~\ref{tab:drilling}; Figure~\ref{fig:drilling}), without experimental drilling validation.
+
+\section*{References}
+\hypertarget{source:chapter}{[1]} A.~C.~Araujo, \href{https://github.com/PaoloRos/MASSMa/blob/main/1st_assignment/turning_params.pdf}{\emph{Integrating Environmental Impact into Cutting Speed Decisions in CNC Turning}}, course chapter, Tables~1--2. \href{https://github.com/annacarlaaraujo/chapter_2025}{Experimental dataset}.\par
+\hypertarget{source:slides}{[2]} \href{run:sources/introduction_smart_machining_2025.pdf}{\emph{Introduction -- Smart Machining}}, INSA Toulouse course slides, 2025.\par
+\hypertarget{source:sandvik}{[3]} Sandvik Coromant, \href{https://cdn.sandvik.coromant.com/files/sitecollectiondocuments/services/metal-cutting-e-learning/formulas-and-definitions/formulas-and-deinitions-for-drilling-metric-enu.pdf}{\emph{Formulas and Definitions for Drilling -- Metric}}, p.~H81.\par
+Code and reproducibility: \href{https://github.com/PaoloRos/MASSMa/tree/main/1st_assignment}{PaoloRos/MASSMa, first assignment}.
+\par\smallskip
+\colorbox{pale}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{
+\textbf{\color{navy}AI Use and Co-Authorship.} ChatGPT (GPT-6), AI co-author, generated code, supporting material and this report. The approach and analytical decisions are Paolo Rossi's.}}
+\end{document}

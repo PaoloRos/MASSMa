@@ -128,18 +128,19 @@ print(f'Saved: {os.path.relpath(output_path, Path.cwd())}')
 
 fig, ax = plt.subplots()
 # Draw each power value over its own time interval.
-ax.stairs(Pc_vc, time_edges_vc, baseline=None, color='#2166ac', linewidth=2)
+# Convert only the displayed power; prediction arrays and CSVs remain in W.
+ax.stairs(Pc_vc / 1000, time_edges_vc, baseline=None, color='#2166ac', linewidth=2)
 # Dashed vertical lines mark internal block boundaries.
 for boundary in time_edges_vc[1:-1]:
     ax.axvline(boundary, color='gray', linestyle='--', linewidth=0.8, alpha=0.7)
 ax.set_xlabel('Cumulative cutting time (s)')
-ax.set_ylabel('Power (W)')
+ax.set_ylabel('Power (kW)')
 ax.set_title('Predicted Cutting Power — Constant Cutting Speed')
 ax.set_xlim(0, time_edges_vc[-1])
 # Tight y-axis limits, with padding even when power is constant.
-y_min = Pc_vc.min()
-y_max = Pc_vc.max()
-y_padding = max(0.05 * (y_max - y_min), 0.02 * abs(y_max), 1.0)
+y_min = Pc_vc.min() / 1000
+y_max = Pc_vc.max() / 1000
+y_padding = max(0.05 * (y_max - y_min), 0.02 * abs(y_max), 0.001)
 ax.set_ylim(y_min - y_padding, y_max + y_padding)
 ax.grid(axis='y', alpha=0.25)
 fig.tight_layout()
@@ -156,18 +157,18 @@ print(f'Saved: {os.path.relpath(output_path, Path.cwd())}')
 
 fig, ax = plt.subplots()
 # Draw each power value over its own time interval.
-ax.stairs(Pc_n, time_edges_n, baseline=None, color='#b35806', linewidth=2)
+ax.stairs(Pc_n / 1000, time_edges_n, baseline=None, color='#b35806', linewidth=2)
 # Dashed vertical lines mark internal block boundaries.
 for boundary in time_edges_n[1:-1]:
     ax.axvline(boundary, color='gray', linestyle='--', linewidth=0.8, alpha=0.7)
 ax.set_xlabel('Cumulative cutting time (s)')
-ax.set_ylabel('Power (W)')
+ax.set_ylabel('Power (kW)')
 ax.set_title('Predicted Cutting Power — Constant Spindle Speed')
 ax.set_xlim(0, time_edges_n[-1])
 # Tight y-axis limits, with padding even when power is constant.
-y_min = Pc_n.min()
-y_max = Pc_n.max()
-y_padding = max(0.05 * (y_max - y_min), 0.02 * abs(y_max), 1.0)
+y_min = Pc_n.min() / 1000
+y_max = Pc_n.max() / 1000
+y_padding = max(0.05 * (y_max - y_min), 0.02 * abs(y_max), 0.001)
 ax.set_ylim(y_min - y_padding, y_max + y_padding)
 ax.grid(axis='y', alpha=0.25)
 fig.tight_layout()

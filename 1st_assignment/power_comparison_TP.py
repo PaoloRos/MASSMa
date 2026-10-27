@@ -110,12 +110,15 @@ def compare_power(df_exp, Ts, mode):
     comparison.loc[signal.isna(), predicted_column] = np.nan
 
     # Equally spaced samples have equal weight. Missing samples are excluded;
-    # no detection smoothing is applied to the values being averaged.
+    # no detection smoothing is applied to the mean or sample SD (ddof=1).
     summary = pd.DataFrame({
         'diameter_mm': df_pred['diameter_mm'].to_numpy(),
         'predicted_power_W': df_pred['cutting_power_W'].to_numpy(),
         'avg_experimental_power_W': [
             signal.iloc[start:stop].mean() for start, stop in zip(starts, stops)
+        ],
+        'std_experimental_power_W': [
+            signal.iloc[start:stop].std(ddof=1) for start, stop in zip(starts, stops)
         ],
     })
     predicted = summary['predicted_power_W']
@@ -130,15 +133,26 @@ def report_saved(path):
     print(f'Saved: {os.path.relpath(path, Path.cwd())}')
 
 
-def export_plot(time, curves, filename, title, boundaries=()):
+def export_plot(time, curves, filename, title, pass_intervals=()):
     """curves: (power in W, label, color, width, step) tuples."""
     fig, ax = plt.subplots()
     for values, label, color, width, step in curves:
         # Convert only the plotted values; calculations and CSVs remain in W.
         ax.plot(time, np.asarray(values) / 1000, label=label, color=color, linewidth=width,
                 drawstyle='steps-post' if step else 'default')
-    for boundary in boundaries:
+    pass_intervals = list(pass_intervals)
+    for boundary, _ in pass_intervals[1:]:
         ax.axvline(boundary, color='lightgray', linestyle='--', linewidth=1, zorder=0)
+    if pass_intervals:
+        # Center each number on the measured cutting interval, including when
+        # pass durations differ under constant cutting velocity.
+        pass_axis = ax.secondary_xaxis('top')
+        pass_axis.set_xticks(
+            [(start + end) / 2 for start, end in pass_intervals],
+            labels=[str(number) for number in range(1, len(pass_intervals) + 1)],
+        )
+        pass_axis.set_xlabel(f'Pass number ({len(pass_intervals)} total)', labelpad=8)
+        pass_axis.tick_params(axis='x', length=0, pad=5)
     ax.set_xlabel('Time (s)')
     ax.set_ylabel('Power (kW)')
     ax.set_title(title)
@@ -175,7 +189,7 @@ def main():
             (comparison[f'{column}_predicted'], 'Predicted', ORANGE, 2, True),
         ], f'power_comparison_constant_{mode}',
             f'Cutting Power: Experimental vs. Predicted\n{operating_mode}',
-            aligned['aligned_start_s'].iloc[1:])
+            zip(aligned['aligned_start_s'], aligned['aligned_end_s']))
 
 
 if __name__ == '__main__':

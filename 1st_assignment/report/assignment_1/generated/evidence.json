@@ -1,0 +1,100 @@
+{
+  "production_date": "2026-10-27T10:38:26.949243+01:00",
+  "sample_period_s": 0.009,
+  "timing": {
+    "vc": {
+      "predicted_total_s": 105.55751316700001,
+      "detected_total_s": 102.177,
+      "signed_total_difference_pct": -3.202532027873539,
+      "duration_mae_s": 0.2817094305833329,
+      "predicted_pass_durations_s": [
+        11.56106097,
+        11.05840614,
+        10.55575132,
+        10.05309649,
+        9.550441667,
+        9.047786842,
+        8.545132018,
+        8.042477193,
+        7.539822369,
+        7.037167544,
+        6.534512719,
+        6.031857895
+      ],
+      "detected_pass_durations_s": [
+        11.520000000000001,
+        10.790999999999999,
+        10.305,
+        9.792000000000002,
+        9.270000000000003,
+        8.765999999999998,
+        7.974000000000004,
+        7.7760000000000105,
+        7.262999999999991,
+        6.75,
+        6.263999999999996,
+        5.706000000000003
+      ]
+    },
+    "n": {
+      "predicted_total_s": 120.0,
+      "detected_total_s": 120.08699999999999,
+      "signed_total_difference_pct": 0.0724999999999909,
+      "duration_mae_s": 0.012749999999999448,
+      "predicted_pass_durations_s": [
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10
+      ],
+      "detected_pass_durations_s": [
+        10.026,
+        9.999,
+        10.026,
+        10.026000000000003,
+        9.999000000000002,
+        10.007999999999996,
+        9.99900000000001,
+        10.025999999999996,
+        9.980999999999995,
+        10.007999999999996,
+        9.99900000000001,
+        9.98999999999998
+      ]
+    }
+  },
+  "report_values": {
+    "MeanKcVc": "2985.64",
+    "BetweenSdVc": "37.37",
+    "MaxErrorVc": "2.83",
+    "MinErrorVc": "0.06",
+    "MeanErrorVc": "1.06",
+    "MeanKcN": "3091.83",
+    "BetweenSdN": "72.48",
+    "MaxErrorN": "7.31",
+    "MinErrorN": "0.60",
+    "MeanErrorN": "4.30",
+    "ReportDate": "27 October 2026",
+    "SamplePeriod": "0.009",
+    "PredPowerVc": "1.513",
+    "FirstMeanN": "1.731",
+    "LastMeanN": "0.968",
+    "FirstKcN": "2995.85",
+    "LastKcN": "3210.76",
+    "ReferenceVc": "90.48",
+    "KcDifference": "3.56",
+    "PrePower": "1.210",
+    "DrillPower": "3.147",
+    "AnnularPower": "2.682",
+    "MedianSamplesVc": "23",
+    "MedianSamplesN": "11"
+  }
+}
