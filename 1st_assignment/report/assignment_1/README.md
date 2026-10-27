@@ -1,7 +1,5 @@
 # Assignment 1 Report
 
-Status: **To Be Reviewed**.
-
 main.tex is the editable source; assignment_1.pdf is the compiled report.
 The report may extend to seven pages. Conclusions form a separate numbered
 section on their own page; body text, references and the AI-use statement use
